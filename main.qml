@@ -17,8 +17,11 @@
 
 import QtQuick 2.9
 import org.asteroid.controls 1.0
+import Nemo.KeepAlive 1.1
 
 Application {
     centerColor: "#fff"
     outerColor: "#fff"
+
+    Component.onCompleted: DisplayBlanking.preventBlanking = true
 }
