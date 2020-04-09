@@ -20,8 +20,42 @@ import org.asteroid.controls 1.0
 import Nemo.KeepAlive 1.1
 
 Application {
-    centerColor: "#fff"
-    outerColor: "#fff"
+    centerColor: "#b04d1c"
+    outerColor: "#421c0a"
 
+    Rectangle {
+        id: whiteOverlay
+        color: "#fff"
+        anchors.fill: parent
+        OpacityAnimator {
+            id: onOffAnimation
+            target: whiteOverlay
+            to: 1
+            duration: 100
+        }
+    }
+
+    Icon {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        width: Dims.l(20)
+        height: width
+        name:  "ios-bulb"
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            if (onOffAnimation.to == 1) {
+                onOffAnimation.from = 1
+                onOffAnimation.to = 0
+                onOffAnimation.start()
+            } else {
+                onOffAnimation.from = 0
+                onOffAnimation.to = 1
+                onOffAnimation.start()
+            }
+        }
+    }
     Component.onCompleted: DisplayBlanking.preventBlanking = true
 }
