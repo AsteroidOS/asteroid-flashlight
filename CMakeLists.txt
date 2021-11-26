@@ -17,6 +17,7 @@ include(AsteroidTranslations)
 
 ecm_find_qmlmodule(Nemo.KeepAlive 1.1)
 
+build_translations(i18n)
 add_subdirectory(src)
 
 generate_desktop(${CMAKE_SOURCE_DIR} asteroid-flashlight)
