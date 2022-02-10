@@ -20,8 +20,8 @@ import org.asteroid.controls 1.0
 import Nemo.KeepAlive 1.1
 
 Application {
-    centerColor: "#b04d1c"
-    outerColor: "#421c0a"
+    centerColor: "#00A698"
+    outerColor: "#000C07"
 
     Rectangle {
         id: whiteOverlay
