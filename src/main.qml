@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2019 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2022 Timo Könnecke <github.com/eLtMosen>
+ *               2019 Florent Revest <revestflo@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,45 +18,46 @@
 
 import QtQuick 2.9
 import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0
 import Nemo.KeepAlive 1.1
 
 Application {
-    centerColor: "#b04d1c"
-    outerColor: "#421c0a"
+    id: app
+
+    centerColor: "#00A698"
+    outerColor: "#000C07"
 
     Rectangle {
-        id: whiteOverlay
-        color: "#fff"
-        anchors.fill: parent
-        OpacityAnimator {
-            id: onOffAnimation
-            target: whiteOverlay
-            to: 1
-            duration: 100
-        }
-    }
+        id: flashCircle
 
-    Icon {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        width: Dims.l(20)
+        property bool flashOn: true
+
+        anchors.centerIn: app
+        color: flashOn ? "#ffffffff" : "#66444444"
+        width: flashOn ? Dims.w(100) : Dims.w(45)
         height: width
-        name:  "ios-bulb"
+        radius: DeviceInfo.hasRoundScreen ? width : flashOn ? 0 : width
+
+        Icon {
+            anchors {
+                centerIn: flashCircle
+                verticalCenterOffset: Dims.h(1)
+            }
+            width: flashCircle.width * .7
+            height: width
+            color: flashCircle.flashOn ? "#F0F0F0" : "#FFF"
+            name:  flashCircle.flashOn ? "ios-bulb-outline" : "ios-bulb"
+        }
+
+        MouseArea {
+            anchors.fill: flashCircle
+            onClicked: flashCircle.flashOn ? flashCircle.flashOn = false : flashCircle.flashOn = true
+        }
+
+        Behavior on width { NumberAnimation { duration: 100; easing.type: Easing.InCurve } }
+        Behavior on radius { NumberAnimation { duration: 100; easing.type: Easing.OutQuint } }
+        Behavior on color { ColorAnimation { duration: 150; easing.type: Easing.InCurve } }
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            if (onOffAnimation.to == 1) {
-                onOffAnimation.from = 1
-                onOffAnimation.to = 0
-                onOffAnimation.start()
-            } else {
-                onOffAnimation.from = 0
-                onOffAnimation.to = 1
-                onOffAnimation.start()
-            }
-        }
-    }
     Component.onCompleted: DisplayBlanking.preventBlanking = true
 }
