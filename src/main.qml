@@ -22,7 +22,6 @@ import org.asteroid.utils 1.0
 import Nemo.KeepAlive 1.1
 
 Application {
-    id: app
 
     centerColor: "#00A698"
     outerColor: "#000C07"
@@ -32,17 +31,14 @@ Application {
 
         property bool flashOn: true
 
-        anchors.centerIn: app
+        anchors.centerIn: parent
         color: flashOn ? "#ffffffff" : "#66444444"
         width: flashOn ? Dims.w(100) : Dims.w(45)
         height: width
         radius: DeviceInfo.hasRoundScreen ? width : flashOn ? 0 : width
 
         Icon {
-            anchors {
-                centerIn: flashCircle
-                verticalCenterOffset: Dims.h(1)
-            }
+            anchors.centerIn: flashCircle
             width: flashCircle.width * .7
             height: width
             color: flashCircle.flashOn ? "#F0F0F0" : "#FFF"
@@ -51,7 +47,7 @@ Application {
 
         MouseArea {
             anchors.fill: flashCircle
-            onClicked: flashCircle.flashOn ? flashCircle.flashOn = false : flashCircle.flashOn = true
+            onClicked: flashCircle.flashOn = !flashCircle.flashOn
         }
 
         Behavior on width { NumberAnimation { duration: 100; easing.type: Easing.InCurve } }
