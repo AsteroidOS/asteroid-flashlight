@@ -22,7 +22,6 @@ import org.asteroid.utils 1.0
 import Nemo.KeepAlive 1.1
 
 Application {
-
     centerColor: "#00A698"
     outerColor: "#000C07"
 
