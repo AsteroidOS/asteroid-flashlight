@@ -34,7 +34,7 @@ Application {
         anchors.verticalCenterOffset: DeviceInfo.flatTireHeight/2
         color: flashOn ? "#ffffffff" : "#66444444"
         width: flashOn ? Dims.w(100) : Dims.w(45)
-        height: flashOn ? Dims.h(100) : width
+        height: flashOn ? Dims.h(100) : Dims.h(45)
         radius: DeviceInfo.hasRoundScreen ? width : flashOn ? 0 : width
 
         Icon {
