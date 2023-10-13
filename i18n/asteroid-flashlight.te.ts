@@ -6,7 +6,7 @@
     <message id="id-app-launcher-name">
         <location filename="asteroid-flashlight.desktop.h" line="6"/>
         <source>Flashlight</source>
-        <translation type="unfinished"></translation>
+        <translation>ఫ్లాష్లైట్</translation>
     </message>
 </context>
 </TS>
