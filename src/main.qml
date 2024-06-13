@@ -19,11 +19,25 @@
 import QtQuick 2.9
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
+import org.nemomobile.systemsettings 1.0
 import Nemo.KeepAlive 1.1
 
 Application {
     centerColor: "#00A698"
     outerColor: "#000C07"
+    property int startBrightness: -1
+
+    DisplaySettings {
+        id: displaySettings
+        onBrightnessChanged: {
+            if (startBrightness != -1) {
+                return
+            }
+
+            startBrightness = brightness
+            displaySettings.brightness = displaySettings.maximumBrightness
+        }
+    }
 
     Rectangle {
         id: flashCircle
@@ -47,7 +61,10 @@ Application {
 
         MouseArea {
             anchors.fill: flashCircle
-            onClicked: flashCircle.flashOn = !flashCircle.flashOn
+            onClicked: {
+                flashCircle.flashOn = !flashCircle.flashOn
+                displaySettings.brightness = flashCircle.flashOn ? displaySettings.maximumBrightness : startBrightness
+            }
         }
 
         Behavior on width { NumberAnimation { duration: 100; easing.type: Easing.InCurve } }
@@ -57,4 +74,5 @@ Application {
     }
 
     Component.onCompleted: DisplayBlanking.preventBlanking = true
+    Component.onDestruction: displaySettings.brightness = startBrightness
 }
