@@ -45,11 +45,11 @@ Application {
         property bool flashOn: true
 
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: DeviceInfo.flatTireHeight/2
+        anchors.verticalCenterOffset: DeviceSpecs.flatTireHeight/2
         color: flashOn ? "#ffffffff" : "#66444444"
         width: flashOn ? Dims.w(100) : Dims.w(45)
         height: flashOn ? Dims.h(100) : Dims.h(45)
-        radius: DeviceInfo.hasRoundScreen ? width : flashOn ? 0 : width
+        radius: DeviceSpecs.hasRoundScreen ? width : flashOn ? 0 : width
 
         Icon {
             anchors.centerIn: flashCircle
