@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2022 Timo Könnecke <github.com/eLtMosen>
- *               2019 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2026 - Timo Könnecke <github.com/moWerk>
+ *               2019 - Florent Revest <revestflo@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,61 +18,53 @@
 
 import QtQuick 2.9
 import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0
-import org.nemomobile.systemsettings 1.0
 import Nemo.KeepAlive 1.1
 
 Application {
+    id: app
+
     centerColor: "#00A698"
-    outerColor: "#000C07"
+    outerColor:  "#000C07"
+
+    // Relay properties written by AppShell once its page loaders complete.
+    // flashlightOn starts true so the bare white rect is visible from frame 1
+    // and anyFeatureActive correctly blocks blanking before AppShell loads.
+    property bool flashlightOn: true
+    property bool beaconOn:     false
+    property bool messageOn:    false
+    property bool strobeOn:     false
+    property bool anyFeatureActive: flashlightOn || beaconOn || strobeOn || messageOn
+
     property int startBrightness: -1
+    // Instantiated by AppShell after first frame to avoid blocking Wayland commit
+    property var displaySettings: null
 
-    DisplaySettings {
-        id: displaySettings
-        onBrightnessChanged: {
-            if (startBrightness != -1) {
-                return
-            }
-
-            startBrightness = brightness
-            displaySettings.brightness = displaySettings.maximumBrightness
-        }
+    onAnyFeatureActiveChanged: DisplayBlanking.preventBlanking = anyFeatureActive
+    Component.onDestruction: {
+        if (displaySettings) displaySettings.brightness = startBrightness
     }
 
+    // Bare white rect — renders in frame 1, costs nothing to parse.
+    // Sits below the AppShell Loader in declaration order so the real
+    // flashlight page covers it once loaded.
     Rectangle {
-        id: flashCircle
-
-        property bool flashOn: true
-
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: DeviceSpecs.flatTireHeight/2
-        color: flashOn ? "#ffffffff" : "#66444444"
-        width: flashOn ? Dims.w(100) : Dims.w(45)
-        height: flashOn ? Dims.h(100) : Dims.h(45)
-        radius: DeviceSpecs.hasRoundScreen ? width : flashOn ? 0 : width
-
-        Icon {
-            anchors.centerIn: flashCircle
-            width: flashCircle.width * .7
-            height: width
-            color: flashCircle.flashOn ? "#F0F0F0" : "#FFF"
-            name:  flashCircle.flashOn ? "ios-bulb-outline" : "ios-bulb"
-        }
-
-        MouseArea {
-            anchors.fill: flashCircle
-            onClicked: {
-                flashCircle.flashOn = !flashCircle.flashOn
-                displaySettings.brightness = flashCircle.flashOn ? displaySettings.maximumBrightness : startBrightness
-            }
-        }
-
-        Behavior on width { NumberAnimation { duration: 100; easing.type: Easing.InCurve } }
-        Behavior on height { NumberAnimation { duration: 100; easing.type: Easing.InCurve } }
-        Behavior on radius { NumberAnimation { duration: 100; easing.type: Easing.OutQuint } }
-        Behavior on color { ColorAnimation { duration: 150; easing.type: Easing.InCurve } }
+        anchors.fill: parent
+        color: "#ffffff"
+        visible: app.flashlightOn
     }
 
-    Component.onCompleted: DisplayBlanking.preventBlanking = true
-    Component.onDestruction: displaySettings.brightness = startBrightness
+    // AppShell contains all page navigation, DisplaySettings, LayerStack,
+    // and ListView. Activated in onCompleted so its parse cost falls after
+    // the first Wayland frame commit.
+    Loader {
+        id: appShellLoader
+        anchors.fill: parent
+        active: false
+        source: "AppShell.qml"
+    }
+
+    Component.onCompleted: {
+        DisplayBlanking.preventBlanking = anyFeatureActive
+        appShellLoader.active = true
+    }
 }

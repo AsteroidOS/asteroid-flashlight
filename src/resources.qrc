@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>AppShell.qml</file>
+        <file>ValueCycler.qml</file>
+        <file>BannerScroll.qml</file>
+        <file>flashlight.qml</file>
+        <file>beacon.qml</file>
+        <file>message.qml</file>
+        <file>strobe.qml</file>
     </qresource>
 </RCC>
