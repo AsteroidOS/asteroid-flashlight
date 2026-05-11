@@ -16,11 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.9
-import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0
-import org.nemomobile.systemsettings 1.0
-import Nemo.KeepAlive 1.1
+import QtQuick
+import org.asteroid.controls
+import org.asteroid.utils
+import org.nemomobile.systemsettings
+import Nemo.KeepAlive
 
 Application {
     centerColor: "#00A698"

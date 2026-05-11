@@ -4,7 +4,7 @@ set_target_properties(asteroid-flashlight PROPERTIES PREFIX "")
 target_link_libraries(
 	asteroid-flashlight
 	PUBLIC
-		Asteroid::AsteroidApp
+		Asteroid::AsteroidApp6
 )
 
 install(
