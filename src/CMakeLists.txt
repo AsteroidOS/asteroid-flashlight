@@ -1,5 +1,9 @@
-add_library(asteroid-flashlight main.cpp resources.qrc)
+add_library(asteroid-flashlight main.cpp)
 set_target_properties(asteroid-flashlight PROPERTIES PREFIX "")
+
+asteroid_app_qml_module(asteroid-flashlight
+	main.qml
+)
 
 target_link_libraries(
 	asteroid-flashlight
