@@ -4,6 +4,9 @@ set_target_properties(asteroid-flashlight PROPERTIES PREFIX "")
 asteroid_app_qml_module(asteroid-flashlight
 	main.qml
 	Flashlight.qml
+	Beacon.qml
+	ValueCycler.qml
+	ColorRing.qml
 )
 
 target_link_libraries(
