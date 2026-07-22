@@ -27,12 +27,23 @@ Item {
         visible: !flashOn
     }
 
+    // Color ring selector around the collapsed trigger. Placed before the
+    // circle so the trigger's own tap area stacks above the ring's disc.
+    ColorRing {
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: DeviceSpecs.flatTireHeight / 2
+        width:  Dims.l(90)
+        height: Dims.l(90)
+        circleDiameter: circleSize
+        visible: !flashOn
+    }
+
     Rectangle {
         id: flashlightCircle
 
         anchors.centerIn: parent
         anchors.verticalCenterOffset: DeviceSpecs.flatTireHeight / 2
-        color: flashOn ? "#ffffffff" : "#66444444"
+        color: flashOn ? app.colorValues[app.colorIndex] : "#66444444"
         width: flashOn ? Dims.w(100) : circleSize
         height: flashOn ? Dims.h(100) : circleSize
         radius: DeviceSpecs.hasRoundScreen ? width : flashOn ? 0 : width
@@ -41,8 +52,13 @@ Item {
             anchors.centerIn: parent
             width: flashlightCircle.width * 0.7
             height: width
-            color: flashOn ? "#F2F2F2" : "#FFF"
-            name:  flashOn ? "ios-bulb-outline" : "ios-bulb"
+            // Glitch-impression prevention: the active bulb is a slightly
+            // darker shade of the selected color, barely offset from the
+            // fill so it reads as the flashlight, not a rendering error.
+            // Collapsed, the outlined bulb previews the selected color.
+            color: flashOn ? Qt.darker(app.colorValues[app.colorIndex], 1.1)
+                           : app.colorValues[app.colorIndex]
+            name:  "ios-bulb-outline"
         }
 
         MouseArea {
