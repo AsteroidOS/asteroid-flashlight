@@ -16,9 +16,14 @@ Application {
     centerColor: "#00A698"
     outerColor:  "#000C07"
 
-    // Relayed from the page loader so blanking and swiping react.
+    // Relayed from the page loaders so blanking, PageDot and swiping react.
     property bool flashlightOn: true
-    property bool anyFeatureActive: flashlightOn
+    property bool beaconOn:     false
+    property bool anyFeatureActive: flashlightOn || beaconOn
+
+    // White first (the stock look), then the system signal palette hues.
+    property var colorValues: ["#ffffff", "#ff0000", "#ffa600", "#00ff00", "#0080ff", "#b000ff"]
+    property int colorIndex:  0
 
     property int startBrightness: -1
     property var displaySettings: dsettings
@@ -57,7 +62,7 @@ Application {
                 interactive: !app.anyFeatureActive
                 clip: true
                 cacheBuffer: pageView.width * 10
-                model: ["Flashlight.qml"]
+                model: ["Flashlight.qml", "Beacon.qml"]
 
                 delegate: Item {
                     width:  pageView.width
@@ -70,10 +75,25 @@ Application {
                             item.pageActive = Qt.binding(function() {
                                 return pageView.currentIndex === index
                             })
-                            if (index === 0) app.flashlightOn = Qt.binding(function() { return item.flashOn })
+                            if      (index === 0) app.flashlightOn = Qt.binding(function() { return item.flashOn  })
+                            else if (index === 1) app.beaconOn     = Qt.binding(function() { return item.beaconOn })
                         }
                     }
                 }
+            }
+
+            // The two dots are the sole hint that a second page exists;
+            // hidden while a feature shines fullscreen.
+            PageDot {
+                dotNumber: pageView.model.length
+                currentIndex: pageView.currentIndex
+                anchors {
+                    bottom: parent.bottom
+                    bottomMargin: Dims.l(4)
+                    horizontalCenter: parent.horizontalCenter
+                }
+                height: Dims.l(3)
+                visible: !app.anyFeatureActive
             }
         }
     }
