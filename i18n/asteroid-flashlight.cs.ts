@@ -11,17 +11,17 @@
     <message id="id-beacon">
         <location filename="../src/Beacon.qml" line="73"/>
         <source>Beacon</source>
-        <translation type="unfinished"></translation>
+        <translation>Bóje</translation>
     </message>
     <message id="id-beacon-pulse">
         <location filename="../src/Beacon.qml" line="114"/>
         <source>Pulse</source>
-        <translation type="unfinished"></translation>
+        <translation>Pulzující</translation>
     </message>
     <message id="id-cat-emergency">
         <location filename="../src/Beacon.qml" line="116"/>
         <source>Emergency</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouzové</translation>
     </message>
     <message id="id-flashlight">
         <location filename="../src/Flashlight.qml" line="22"/>
