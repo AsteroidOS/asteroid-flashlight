@@ -16,12 +16,12 @@
     <message id="id-beacon-pulse">
         <location filename="../src/Beacon.qml" line="114"/>
         <source>Pulse</source>
-        <translation type="unfinished"></translation>
+        <translation>ชีพจร</translation>
     </message>
     <message id="id-cat-emergency">
         <location filename="../src/Beacon.qml" line="116"/>
         <source>Emergency</source>
-        <translation type="unfinished"></translation>
+        <translation>ภาวะฉุกเฉิน</translation>
     </message>
     <message id="id-flashlight">
         <location filename="../src/Flashlight.qml" line="22"/>
